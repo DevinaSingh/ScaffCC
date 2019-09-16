@@ -120,19 +120,20 @@ all: Clang
 Clang: llvm build
 	@cd llvm/tools && /bin/rm -f clang && /bin/ln -s ../../clang;
 	@cd clang && /bin/rm -f build && /bin/ln -s ../build;
-	@if [ -z $(USE_GCC) ]; then \
-		if [ "$(UNAME_S)" = "Darwin" ]; then \
-	        cd build && ../llvm/configure --disable-debug-symbols && make ENABLE_LIBCPP=1; \
-	    else \
-	        cd build && ../llvm/configure --disable-debug-symbols && make ; \
-		fi \
-	else \
-		if [ "$(UNAME_S)" = "Darwin" ]; then \
-		    mkdir -p build && cd build && ../llvm/configure --disable-debug-symbols CC=gcc CXX=g++ && make ENABLE_LIBCPP=1; \
-	    else \
-		    mkdir -p build && cd build && ../llvm/configure --disable-debug-symbols CC=gcc CXX=g++ && make ; \
-		fi \
-	fi
+	@if [ -z $(USE_GCC) ]; then \                                                                                                                                     
+                if [ "$(UNAME_S)" = "Darwin" ]; then \                                                                                                                    
+                cd build && ../llvm/configure --disable-debug-symbols && make ENABLE_LIBCPP=1; \                                                                          
+            else \                                                                                                                                                        
+                 cd build && ../llvm/configure --disable-debug-symbols && make ; \                                                                                        
+                fi \                                                                                                                                                      
+        else \                                                                                                                                                            
+                if [ "$(UNAME_S)" = "Darwin" ]; then \                                                                                                                    
+                   mkdir -p build && cd build && ../llvm/configure --disable-debug-symbols CC=gcc CXX=g++ && make ENABLE_LIBCPP=1; \                                      
+            else \                                                                                                                                                        
+                    mkdir -p build && cd build && ../llvm/configure --disable-debug-symbols CC=gcc CXX=g++ && make ; \                                                    
+                fi \
+        fi
+
 	@if [ -z `echo ${PATH} | grep ${PWD}/Debug+Asserts/bin` ]; then \
 		export PATH=${PATH}:${PWD}/Debug+Asserts/bin; \
 	else true; fi
@@ -153,7 +154,7 @@ Scaffold:
 	@cd scaffold && make;
 
 clean:
-	#cd scaffold && make clean
+	cd scaffold && make clean
 	@if [ -d build ]; then cd build && make clean; fi
 
 .PHONY: clean Scaffold Clang

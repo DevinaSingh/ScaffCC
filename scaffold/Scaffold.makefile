@@ -11,7 +11,7 @@ TOFF=0
 CTQG=0
 ROTATIONS=0
 
-BUILD=$(ROOT)/build/Release+Asserts
+BUILD=ROOT
 #BUILD=$(ROOT)/build
 
 SQCTPATH=$(ROOT)/Rotations/sqct/rotZ
@@ -21,8 +21,8 @@ SCRIPTSPATH=$(ROOT)/scripts/ # select path to scripts
 PRECISION=""
 OPTIMIZE=0
 
-CC=$(BUILD)/bin/clang
-OPT=$(BUILD)/bin/opt
+CC=clang
+OPT=opt
 
 CC_FLAGS=-c -emit-llvm -I/usr/include -I/usr/include/x86_64-linux-gnu -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I$(DIRNAME)
 

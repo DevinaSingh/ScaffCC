@@ -1,7 +1,7 @@
 CXX := g++
 LLVMCOMPONENTS := cppbackend
 RTTIFLAG := -fno-rtti
-LLVMCONFIG := ../build/Debug+Asserts/bin/llvm-config
+LLVMCONFIG := ../build/bin/llvm-config
 
 CXXFLAGS := -I../clang/include \
 	-I../build/tools/clang/include \
