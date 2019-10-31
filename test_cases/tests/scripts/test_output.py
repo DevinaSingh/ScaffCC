@@ -12,15 +12,16 @@ import Config_IBMQ_experience
 from qiskit.transpiler.passes import resource_estimation
 
 
-# Get benchmarks
+# Get filepaths
 filepath = os.getcwd()
 benchmarks_filepath = filepath[:-7] + 'benchmarks'
-root = filepath[:-13]
+root = filepath[:-24]
 scaf_filepath = root + "scaffold.sh"
 
 print("\nRunning NISQ Test Benchmarks")
 print("===================================")
 
+# Connect to IBMQ and retrieve backend simulator
 IBMQ_token = Config_IBMQ_experience.API_token #token needs to be added to file in config directory
 IBMQ_URL = Config_IBMQ_experience.API_URL
 IBMQ.enable_account(IBMQ_token, IBMQ_URL)
@@ -29,12 +30,21 @@ backend_sim = IBMQ.get_backend('ibmq_qasm_simulator')
 correct_tests = 0
 total_tests = 0
 
-
+# Compile all the .scaffold files to open QASM and run them on the simulator to generate output
 for path, subdir, files in os.walk(benchmarks_filepath):
 	for file_name in files:
-	
-		if (file_name.endswith(".qasm")):
-			qc = QuantumCircuit.from_qasm_file(benchmarks_filepath + "/" + file_name[:-5] + "/" + file_name)
+		if (file_name.endswith(".scaffold")):
+			# Get file path of scaffold file and compile it using scaffold.sh
+			file_path = benchmarks_filepath + "/" + file_name[:-9] + "/" + file_name
+			os.system(scaf_filepath + " -b " + file_path)
+			qasm_file = benchmarks_filepath + "/" + file_name[:-9] + "/" + file_name[:-8] + "qasm"
+			
+			# If open QASM can't be found then there was an error compiling the scaffold file
+			if not glob.glob(qasm_file):
+				print("Error Compiling Scaffold File - Could not Find QASM File")
+				sys.exit(1)
+
+			qc = QuantumCircuit.from_qasm_file(qasm_file)
 
 			#Generate Resource Estimation from IBMQ simulator
 			print('\033[1m' + "Generating " + file_name[:-5] + " Resource Estimation" + '\033[0m')
