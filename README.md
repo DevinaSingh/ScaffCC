@@ -12,7 +12,7 @@ This is a light weight version of ScaffCC designed specifically with NISQ applic
     c. Built using cmake 
     
 ## 2. Automated Testing Suite
-     a. 12 NISQ scaffold tests added 
+     a. 9 NISQ scaffold tests added 
      a. Testing suite compiles and runs programs on IBM's simulators to generate counts
      c. Compares these counts against what they should be  
      b. Requires IBM token 
